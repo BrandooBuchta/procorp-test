@@ -27,6 +27,7 @@ interface SuspiciousUser {
   user: User
   totalSuspiciousDays: number
   highestLoginCount: number
+  averageLoginCount: number
 }
 
 const SuspiciousActivity: FC = () => {
@@ -41,14 +42,23 @@ const SuspiciousActivity: FC = () => {
 
         for (const user of users.slice(0, 10)) {
           const { data: activity } = await axios.get<UserActivity>(`/api/users/${user.id}/activity`)
-          const last3Days = activity.last30Days.slice(-3)
-          const totalLoginsLast3Days = last3Days.reduce((sum, day) => sum + day.logins, 0)
+          const loginCounts = activity.last30Days.map((day) => day.logins)
 
-          if (totalLoginsLast3Days > 3) {
+          const suspiciousDays = activity.last30Days.filter(day => day.logins > 10).length
+          const totalLogins = loginCounts.reduce((sum, val) => sum + val, 0)
+          const averageLogins = totalLogins / loginCounts.length
+          const highestLogin = Math.max(...loginCounts)
+
+          const isSuspicious =
+            suspiciousDays >= 3 ||
+            (averageLogins > 0 && highestLogin >= 15 && highestLogin >= averageLogins * 4)
+
+          if (isSuspicious) {
             detected.push({
               user,
-              totalSuspiciousDays: 0,
-              highestLoginCount: Math.max(...last3Days.map(day => day.logins)),
+              totalSuspiciousDays: suspiciousDays,
+              highestLoginCount: highestLogin,
+              averageLoginCount: parseFloat(averageLogins.toFixed(2)),
             })
           }
         }
@@ -100,11 +110,15 @@ const SuspiciousActivity: FC = () => {
           <div key={suspect.user.id} className="flex flex-col gap-1 text-sm">
             <div className="flex justify-between">
               <div>
-                <p className="font-medium">{suspect.user.firstName} {suspect.user.lastName}</p>
+                <p className="font-medium">
+                  {suspect.user.firstName} {suspect.user.lastName}
+                </p>
                 <p className="text-muted-foreground text-xs">{suspect.user.email}</p>
               </div>
-              <div className="text-right">
-                <p className="text-xs">Highest Logins (3d): {suspect.highestLoginCount}</p>
+              <div className="text-right text-xs">
+                <p>Suspicious Days: {suspect.totalSuspiciousDays}</p>
+                <p>Avg Logins/Day: {suspect.averageLoginCount}</p>
+                <p>Max Logins: {suspect.highestLoginCount}</p>
               </div>
             </div>
           </div>
