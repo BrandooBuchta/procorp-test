@@ -34,7 +34,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SessionProvider session={(pageProps as any).session}>
+      <SessionProvider session={pageProps.session}>
         <Toaster />
         <AuthGuard>
           <Component {...pageProps} />
