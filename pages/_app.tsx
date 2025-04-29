@@ -41,6 +41,5 @@ export default function App({ Component, pageProps }: AppProps) {
         </AuthGuard>
       </SessionProvider>
     </ThemeProvider>
-
   )
 }
