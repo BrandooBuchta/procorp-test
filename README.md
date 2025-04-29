@@ -44,13 +44,13 @@ Aplikace poběží na [http://localhost:3000](http://localhost:3000).
 
 `.env`:
 ```
-NEXTAUTH_SECRET=nějaký-silný-secret
+NEXTAUTH_SECRET=
 
-GITHUB_ID=your-github-client-id
-GITHUB_SECRET=your-github-client-secret
+GITHUB_ID=
+GITHUB_SECRET=
 
-ADMIN_EMAIL=test@email.com
-ADMIN_PASSWORD=123456
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
 ```
 
 Soubor `.env.example` je součástí repozitáře.
@@ -115,5 +115,3 @@ docker run -p 3000:3000 nextjs-admin-dashboard
 - [Šimon Buchta](https://github.com/simonbuchta)
 
 ---
-
-> Poznámka: Tento projekt byl vytvořený čistě pro účely zadání frontendového testu.
