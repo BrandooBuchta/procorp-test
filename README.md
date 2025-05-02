@@ -4,8 +4,6 @@
 Tato aplikace je admin dashboard postavený v Next.js 15 pomocí TypeScriptu, NextAuth.js a shadcn/ui komponent.  
 Dashboard umožňuje správu uživatelů, analýzu jejich přihlášení, detekci podezřelých aktivit a správu účtu admina.
 
-> Projekt je připravený podle zadání frontend testu od ProCorp.
-
 ---
 
 ## 🔧 Technologie
